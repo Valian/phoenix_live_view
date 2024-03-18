@@ -623,10 +623,11 @@ var DOM = {
     return node.id && DOM.private(node, "destroyed") ? true : false;
   },
   wantsNewTab(e) {
-    let wantsNewTab = e.ctrlKey || e.shiftKey || e.metaKey || e.button && e.button === 1;
-    let isDownload = e.target instanceof HTMLAnchorElement && e.target.hasAttribute("download");
-    let isTargetBlank = e.target.hasAttribute("target") && e.target.getAttribute("target").toLowerCase() === "_blank";
-    return wantsNewTab || isTargetBlank || isDownload;
+    let wantsNewTab = e.ctrlKey || e.shiftKey || e.metaKey || (e.button && e.button === 1)
+    let isDownload = (e.target instanceof HTMLAnchorElement && e.target.hasAttribute("download"))
+    let isTargetBlank = e.target.hasAttribute("target") && e.target.getAttribute("target").toLowerCase() === "_blank"
+    let isTargetNamedTab = e.target.hasAttribute("target") && !e.target.getAttribute("target").startsWith("_")
+    return wantsNewTab || isTargetBlank || isDownload || isTargetNamedTab
   },
   isUnloadableFormSubmit(e) {
     let isDialogSubmit = e.target && e.target.getAttribute("method") === "dialog" || e.submitter && e.submitter.getAttribute("formmethod") === "dialog";
